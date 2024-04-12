@@ -17,6 +17,9 @@
         d:DataContext="{d:DesignInstance mainWindow1:MainWindowViewModel}">
 
     <Grid>
-
+        <Button Content="Закрыть главное окно"
+                Command="{Binding CloseMainWindowCommand}"
+                Width="150"
+                Height="21"/>
     </Grid>
 </Window>
