@@ -2,6 +2,7 @@
 using BookShelf.ViewModels;
 using BookShelf.Views.MainWindow;
 using System.Windows;
+using BookShelf.Infrastructure.Settings;
 
 namespace BookShelf.Bootstrapper
 {
@@ -14,6 +15,7 @@ namespace BookShelf.Bootstrapper
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder
+                .RegisterModule<Infrastructure.RegistrationModule>()
                 .RegisterModule<Views.RegistrationModule>()
                 .RegisterModule<RegistrationModule>();
 
@@ -27,6 +29,8 @@ namespace BookShelf.Bootstrapper
 
         public Window Run()
         {
+            InitializeDependencies();
+
             var mainWindow = _container.Resolve<IMainWindow>();
 
             if (mainWindow is not Window window)
@@ -35,6 +39,11 @@ namespace BookShelf.Bootstrapper
             window.Show();
 
             return window;
+        }
+
+        private void InitializeDependencies()
+        {
+            _container.Resolve<IMainWindowMementoWrapperInitializer>().Initialize();
         }
     }
 }
