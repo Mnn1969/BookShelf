@@ -10,6 +10,7 @@ namespace BookShelf.Bootstrapper;
 public class Bootstrapper : IDisposable
 {
     private readonly IContainer _container;
+    private IMainWindowViewModel _mainWindowViewModel;
 
     public Bootstrapper()
     {
@@ -26,6 +27,7 @@ public class Bootstrapper : IDisposable
 
     public void Dispose()
     {
+        _mainWindowViewModel.Dispose();
         _container.Dispose();
     }
 
@@ -34,10 +36,10 @@ public class Bootstrapper : IDisposable
     {
         InitializeDependencies();
 
-        var mainWindowViewModel = _container.Resolve<IMainWindowViewModel>();
+        _mainWindowViewModel = _container.Resolve<IMainWindowViewModel>();
         var windowManager = _container.Resolve<IWindowManager>();
 
-        var mainWindow = windowManager.Show(mainWindowViewModel);
+        var mainWindow = windowManager.Show(_mainWindowViewModel);
 
         if (mainWindow is not Window window)
             throw new NotImplementedException();
