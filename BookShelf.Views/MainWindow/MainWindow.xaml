@@ -16,10 +16,12 @@
             Converter={x:Static converters:BoolToWindowStateConverter.Instance}}"
         d:DataContext="{d:DesignInstance mainWindow1:MainWindowViewModel}">
 
-    <Grid>
+    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
         <Button Content="Закрыть главное окно"
                 Command="{Binding CloseMainWindowCommand}"
                 Width="150"
                 Height="21"/>
-    </Grid>
+        <Button Content="О программе" Command="{Binding OpenAboutWindowCommand}"
+                Width="120" Height="21"/>
+    </StackPanel>
 </Window>

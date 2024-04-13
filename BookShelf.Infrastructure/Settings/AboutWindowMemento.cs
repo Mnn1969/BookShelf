@@ -1,9 +1,8 @@
 ﻿namespace BookShelf.Infrastructure.Settings
 {
-    
-    internal class MainWindowMemento : WindowMemento
+    internal class AboutWindowMemento : WindowMemento
     {
-        public MainWindowMemento()
+        public AboutWindowMemento()
         {
             Left = 100;
             Top = 100;

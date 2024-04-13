@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Autofac;
 using BookShelf.ViewModels.MainWindow;
 using BookShelf.ViewModels.Windows;
+using BookShelf.Views.AboutWindow;
 using BookShelf.Views.Factories;
 using BookShelf.Views.MainWindow;
 
@@ -17,7 +18,8 @@ namespace BookShelf.Bootstrapper.Factories
 
         private readonly Dictionary<Type, Type> _map = new()
         {
-            { typeof(IMainWindowViewModel), typeof(IMainWindow) }
+            { typeof(IMainWindowViewModel), typeof(IMainWindow) },
+            {typeof(IAboutWindowViewModel), typeof(IAboutWindow)}
         };
 
         public WindowFactory(IComponentContext componentContext)

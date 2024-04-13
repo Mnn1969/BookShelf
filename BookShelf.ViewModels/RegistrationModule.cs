@@ -10,6 +10,9 @@ namespace BookShelf.ViewModels
             base.Load(builder);
 
             builder.RegisterType<MainWindowViewModel>().As<IMainWindowViewModel>().InstancePerDependency();
+
+            builder.RegisterType<AboutWindowViewModel>().As<IAboutWindowViewModel>().InstancePerDependency();
+            
         }
     }
 }
