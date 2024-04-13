@@ -1,8 +1,12 @@
-﻿namespace BookShelf.ViewModels.Windows
+﻿using System.ComponentModel;
+
+namespace BookShelf.ViewModels.Windows;
+
+public interface IWindow
 {
-    public interface IWindow
-    {
-        void Show();
-        void Close();
-    }
+    void Show();
+    void Close();
+
+    event CancelEventHandler Closing;
+    event EventHandler Closed;
 }

@@ -4,17 +4,16 @@ using BookShelf.Views.AboutWindow;
 using BookShelf.Views.MainWindow;
 using BookShelf.Views.Windows;
 
-namespace BookShelf.Views
-{
-    public class RegistrationModule : Module
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            base.Load(builder);
+namespace BookShelf.Views;
 
-            builder.RegisterType<View.MainWindow.MainWindow>().As<IMainWindow>().InstancePerDependency();
-            builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
-            builder.RegisterType<AboutWindow.AboutWindow>().As<IAboutWindow>().InstancePerDependency();
-        }
+public class RegistrationModule : Module
+{
+    protected override void Load(ContainerBuilder builder)
+    {
+        base.Load(builder);
+
+        builder.RegisterType<View.MainWindow.MainWindow>().As<IMainWindow>().InstancePerDependency();
+        builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
+        builder.RegisterType<AboutWindow.AboutWindow>().As<IAboutWindow>().InstancePerDependency();
     }
 }

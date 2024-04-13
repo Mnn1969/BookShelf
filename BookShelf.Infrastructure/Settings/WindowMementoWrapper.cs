@@ -1,7 +1,7 @@
-﻿using BookShelf.Domain.Settings;
+﻿using System.IO;
+using BookShelf.Domain.Settings;
 using BookShelf.Infrastructure.Common;
 using Newtonsoft.Json;
-using System.IO;
 
 namespace BookShelf.Infrastructure.Settings;
 
@@ -10,9 +10,9 @@ internal abstract class WindowMementoWrapper<TMemento> : IMainWindowMementoWrapp
     where TMemento : WindowMemento, new()
 {
     private readonly IPathService _pathService;
-    private TMemento _windowMemento;
     private bool _initialized;
     private string _settingFilePath;
+    private TMemento _windowMemento;
 
     protected WindowMementoWrapper(IPathService pathService)
     {
@@ -21,6 +21,15 @@ internal abstract class WindowMementoWrapper<TMemento> : IMainWindowMementoWrapp
     }
 
     protected abstract string MementoName { get; }
+
+    public void Dispose()
+    {
+        EnsureInitialized();
+
+        var serializedMemento = JsonConvert.SerializeObject(_windowMemento);
+
+        File.WriteAllText(_settingFilePath, serializedMemento);
+    }
 
     public double Left
     {
@@ -120,14 +129,5 @@ internal abstract class WindowMementoWrapper<TMemento> : IMainWindowMementoWrapp
     {
         if (!_initialized)
             throw new InvalidOperationException($"Wrapper for {typeof(TMemento)} is not initialized");
-    }
-
-    public void Dispose()
-    {
-        EnsureInitialized();
-
-        var serializedMemento = JsonConvert.SerializeObject(_windowMemento);
-
-        File.WriteAllText(_settingFilePath, serializedMemento);
     }
 }

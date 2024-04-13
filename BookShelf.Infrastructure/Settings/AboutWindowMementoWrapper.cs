@@ -1,15 +1,13 @@
 ﻿using BookShelf.Domain.Settings;
 using BookShelf.Infrastructure.Common;
 
-namespace BookShelf.Infrastructure.Settings
+namespace BookShelf.Infrastructure.Settings;
+
+internal class AboutWindowMementoWrapper : WindowMementoWrapper<AboutWindowMemento>, IAboutWindowMementoWrapper
 {
-    internal class AboutWindowMementoWrapper : WindowMementoWrapper<AboutWindowMemento>, IAboutWindowMementoWrapper
+    public AboutWindowMementoWrapper(IPathService pathService) : base(pathService)
     {
-        public AboutWindowMementoWrapper(IPathService pathService) : base(pathService)
-        {
-
-        }
-
-        protected override string MementoName => "AboutWindowMemento";
     }
+
+    protected override string MementoName => "AboutWindowMemento";
 }
