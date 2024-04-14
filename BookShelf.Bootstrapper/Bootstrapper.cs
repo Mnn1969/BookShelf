@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.CodeDom;
+using System.Windows;
 using Autofac;
+using BookShelf.Domain.Factories;
 using BookShelf.Infrastructure.Common;
 using BookShelf.Infrastructure.Settings;
 using BookShelf.ViewModels.MainWindow;
@@ -11,7 +13,7 @@ public class Bootstrapper : IDisposable
 {
     private readonly IContainer _container;
     private IMainWindowViewModel _mainWindowViewModel;
-
+    
     public Bootstrapper()
     {
         var containerBuilder = new ContainerBuilder();
@@ -25,17 +27,13 @@ public class Bootstrapper : IDisposable
         _container = containerBuilder.Build();
     }
 
-    public void Dispose()
-    {
-        _mainWindowViewModel.Dispose();
-        _container.Dispose();
-    }
-
 
     public Window Run()
     {
         InitializeDependencies();
 
+        var mainWindowViewModelFactory = _container.Resolve<IFactory<IMainWindowViewModel>>();
+        _mainWindowViewModel = mainWindowViewModelFactory.Create();
         _mainWindowViewModel = _container.Resolve<IMainWindowViewModel>();
         var windowManager = _container.Resolve<IWindowManager>();
 
@@ -57,5 +55,11 @@ public class Bootstrapper : IDisposable
 
         foreach (var windowMementoWrapperInitializer in windowMementoWrapperInitializers)
             windowMementoWrapperInitializer.Initialize();
+    }
+
+    public void Dispose()
+    {
+        _mainWindowViewModel.Dispose();
+        _container.Dispose();
     }
 }

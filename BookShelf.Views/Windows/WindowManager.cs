@@ -6,7 +6,7 @@ namespace BookShelf.Views.Windows;
 
 internal class WindowManager : IWindowManager
 {
-    private readonly Dictionary<IWindowViewModel, IWindow> _viewModelWindowsMap = new();
+    private readonly Dictionary<IWindowViewModel, IWindow> _viewModelToWindowsMap = new();
 
     private readonly IWindowFactory _windowFactory;
 
@@ -19,9 +19,14 @@ internal class WindowManager : IWindowManager
 
     public IWindow Show<TWindowViewModel>(TWindowViewModel viewModel) where TWindowViewModel : IWindowViewModel
     {
-        var window = _windowFactory.Create(viewModel);
+        if (_viewModelToWindowsMap.TryGetValue(viewModel, out var window))
+        {
+            window.Activate();
+            return window;
+        }
+        window = _windowFactory.Create(viewModel);
 
-        _viewModelWindowsMap.Add(viewModel, window);
+        _viewModelToWindowsMap.Add(viewModel, window);
         _windowToViewModelMap.Add(window, viewModel);
 
         window.Closing += OnWindowClosing;
@@ -34,7 +39,7 @@ internal class WindowManager : IWindowManager
 
     public void Close<TWindowViewModel>(TWindowViewModel viewModel) where TWindowViewModel : IWindowViewModel
     {
-        if (_viewModelWindowsMap.TryGetValue(viewModel, out var window)) 
+        if (_viewModelToWindowsMap.TryGetValue(viewModel, out var window)) 
             window.Close();
     }
 
@@ -45,7 +50,7 @@ internal class WindowManager : IWindowManager
             window.Closing -= OnWindowClosing;
             window.Closed -= OnWindowClosed;
 
-            _viewModelWindowsMap.Remove(viewModel);
+            _viewModelToWindowsMap.Remove(viewModel);
             _windowToViewModelMap.Remove(window);
         }
     }
